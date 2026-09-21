@@ -1,3 +1,9 @@
+## 🎯 The MVP Value Proposition
+
+For busy, fast-casual restaurants overwhelmed by disjointed QR orders, our platform is a lightweight web workflow that unifies table orders before they hit the kitchen and synchronizes prep milestones in real time. Unlike Toast or Square, we protect kitchen pacing and keep diners informed without complex hardware or app downloads.
+
+----
+
 To build a working prototype in 4 days using a simple tech stack (Next.js and Supabase/Firebase), the features are split into immediate implementation and future scope.
 
 ## 🛠️ Core Features (To Be Implemented Now)
@@ -41,6 +47,37 @@ This solution brings three core innovations to the restaurant tech space:
 * The Innovation: Your KDS transitions away from a static "Done/Not Done" checkbox. It broadcasts exact preparation milestones (Pending ➔ Preparing ➔ Ready) across WebSockets back to the guest's mobile browser and the waitstaff's devices.
 * The Impact: It bridges the communication gap between the floor and the kitchen. Guests lose their waiting anxiety, and servers never have to run back to the kitchen window to check on an order.
 
+----
 
+## PM Brainstorming: Breaking Down the Core Innovations
+To make this MVP truly impactful, we need to design the Must-Have features with a highly specific product logic:
+
+## 1. The "Anti-Chaos" Unified Cart
+
+* The Product Logic: Instead of treating every individual smartphone scan as an independent customer session, our backend needs to create a single, live-syncing "room bucket" tied strictly to the table_id.
+* The UX Flow: When User A adds a burger and User B adds tacos at Table 4, they both see the items appearing in real time on their respective screens. The order cannot be fired until someone clicks the collective "Review & Fire" button.
+* Why this wins: It completely eliminates the "Ghost Order" problem. The kitchen gets one clean ticket for the table, allowing the chef to pace the execution correctly.
+
+## 2. Guardrailed Allergy Alerts
+
+* The Product Logic: We are ditching the traditional text box buried at the bottom of the checkout screen.
+* The UX Flow: When a user selects a modification or types an allergy note, our system flags it with a high-priority data attribute. On the KDS dashboard, this text automatically scales up and renders in bold, flashing, or high-contrast red font.
+* Why this wins: It forces the kitchen line's eyes right to the restriction. No more dropped tickets or chefs walking out to the floor to read bad handwriting.
+
+## 3. Two-Way Micro-Status Communication
+
+* The Product Logic: The KDS isn't just a static "Done" checklist. It is a live state-machine.
+* The UX Flow: When a line cook moves a ticket from Pending → Preparing, a WebSocket event fires immediately. The diner’s phone screen shifts from a grey "Received" state to an amber "Cooking" state. When bumped to Ready, it flashes vibrant green.
+* Why this wins: It bridges the information asymmetry. Diners stop harassing busy waitstaff with "Where is my food?" because their phone tells them exactly what stage it's in.
+
+------------------------------
+
+## What we are actively ignoring
+To hit our 4-day deadline,
+
+* No Payments: Diners will pay the waiter at the end via the house traditional POS. We are managing operations, not transactions right now.
+* No Authentication: No "Sign up with Google" or phone number verification. If they are sitting at Table 5, their physical location is their authorization token.
+
+----------------------
 
 
