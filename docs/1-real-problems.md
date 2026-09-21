@@ -60,6 +60,7 @@ Project Name: AeyChhotu!
 
 Product Vision: A zero-download, real-time operational bridge that groups individual table requests into a single unified cart and provides two-way live status updates between diners and the kitchen.
 
+```mermaid
 graph LR
     %% Define Styles
     classDef webApp fill:#FF9900,stroke:#333,stroke-width:2px,color:#000;
@@ -76,6 +77,7 @@ graph LR
     B -->|Live Status Updates| A
     B -->|New Ticket Alert| C
     C -->|Live Tag Sync| B
+```
 
 
 ## Strategic Objectives for the MVP
