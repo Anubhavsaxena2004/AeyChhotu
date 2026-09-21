@@ -28,6 +28,8 @@ Here are 5 big problems in restaurants, why they happen, and the bad fixes used 
 * Root Cause: Servers do not know food is ready until they walk to the kitchen to look.
 * Bad Fix: Chefs yell out table numbers or ring physical bells. Food gets cold under heat lamps while waiting.
 
+----
+
 # Gap Anlaysis of Existing Solutions
 
 Toast, Square, me&u, and Mr Yum are popular QR ordering systems. They stop manual typing errors but create new problems.
@@ -51,18 +53,30 @@ Here are the 3 major features missing and what users complain about:
 * The Friction: When a cook starts making food, the status change is not sent to the server or the guest.
 * User Complaint: Servers must still walk into the kitchen to ask how long food will take. Guests get anxious seeing a frozen screen.
 
+----
+
 # Problem Brief
 Project Name: AeyChhotu!
+
 Product Vision: A zero-download, real-time operational bridge that groups individual table requests into a single unified cart and provides two-way live status updates between diners and the kitchen.
 
-+------------------+     Unified Cart     +---------------------+     Live Tag Sync     +--------------------+
+graph LR
+    %% Define Styles
+    classDef webApp fill:#FF9900,stroke:#333,stroke-width:2px,color:#000;
+    classDef database fill:#3399FF,stroke:#333,stroke-width:2px,color:#fff;
+    classDef kitchen fill:#99CC33,stroke:#333,stroke-width:2px,color:#000;
 
-|  Diner Web App   | -------------------> | Supabase/Firebase DB | -------------------> |  Kitchen Dashboard |
-| (QR Scan / Menu) | <------------------- |  (Real-Time Engine)  | <------------------- | (Kanban/Prep Tags) |
-+------------------+                      +----------------------+                      +--------------------+
+    %% Nodes
+    A["Diner Web App<br>(QR Scan / Menu)"]:::webApp
+    B[("Supabase/Firebase DB<br>(Real-Time Engine)")]:::database
+    C["Kitchen Dashboard<br>(Kanban/Prep Tags)"]:::kitchen
 
-## The Core Problem
-Current restaurant operations suffer from massive communication silos. Traditional paper workflows create entry queues, while first-generation QR code ordering systems (like Toast Mobile or me&u) push orders to the kitchen instantly and individually. This creates "Ghost Order Chaos" (a single table sending 8 disjointed tickets), modifier blind spots (missed allergy notes), and one-way data gaps (diners and servers never knowing the actual preparation progress).
+    %% Connections
+    A -->|Unified Cart| B
+    B -->|Live Status Updates| A
+    B -->|New Ticket Alert| C
+    C -->|Live Tag Sync| B
+
 
 ## Strategic Objectives for the MVP
 
