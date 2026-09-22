@@ -37,44 +37,71 @@ This solution brings three core innovations to the restaurant tech space:
 * The Innovation: Instead of treating every individual smartphone scan as an independent customer, your system creates a single, live-syncing room bucket for the entire table.
 * The Impact: It acts as a digital gatekeeper. It stops the kitchen from getting flooded with 8 separate tickets for one table, protecting course timing without requiring a server to manually combine orders.
 
+```mermaid
+graph TD
+    classDef diner fill:#FF9900,stroke:#333,stroke-width:2px,color:#000;
+    classDef bucket fill:#3399FF,stroke:#333,stroke-width:2px,color:#fff;
+    classDef action fill:#FFCC00,stroke:#333,stroke-width:2px,color:#000;
+    classDef kitchen fill:#00CC66,stroke:#333,stroke-width:2px,color:#fff;
+
+    A1["Diner A: Adds Burger"]:::diner
+    A2["Diner B: Adds Tacos"]:::diner
+    
+    B[("Table Room Bucket<br>(Real-Time Sync Cart)")]:::bucket
+    
+    C{"Review & Fire Button"}:::action
+    D["1 Clean Table Ticket<br>(No Ghost Orders)"]:::kitchen
+
+    A1 & A2 -->|Live Updates| B
+    B -->|Requires Consent| C
+    C -->|Sends Unified Group| D
+```
 ### 2. Guardrailed Allergy Alerts
 
 * The Innovation: Custom modifications and dietary notes bypass standard small-text logs. They are formatted automatically to display in bold, high-contrast red directly on the main KDS ticket line.
 * The Impact: It removes human error caused by bad handwriting or forgotten verbal warnings. Chefs instantly see safety risks without stopping the cooking line.
+  
+```mermaid
+graph LR
+    classDef input fill:#FF9900,stroke:#333,stroke-width:2px,color:#000;
+    classDef engine fill:#3399FF,stroke:#333,stroke-width:2px,color:#fff;
+    classDef kds fill:#FF3333,stroke:#333,stroke-width:2px,color:#fff;
 
+    A["Diner Types Custom Alert<br>(e.g., 'No Peanuts')"]:::input
+    B["System Sets High-Priority Attribute"]:::engine
+    C["KDS Board:<br><b style='color:white; font-size:14px;'>BOLD RED ALERT</b>"]:::kds
+
+    A --> B
+    B -->|Bypasses Standard Modifiers| C
+```
 ### 3. Two-Way Micro-Status Communication
 
 * The Innovation: Your KDS transitions away from a static "Done/Not Done" checkbox. It broadcasts exact preparation milestones (Pending ➔ Preparing ➔ Ready) across WebSockets back to the guest's mobile browser and the waitstaff's devices.
 * The Impact: It bridges the communication gap between the floor and the kitchen. Guests lose their waiting anxiety, and servers never have to run back to the kitchen window to check on an order.
+  
+```mermaid
+graph TD
+    classDef kds fill:#3399FF,stroke:#333,stroke-width:2px,color:#fff;
+    classDef sync fill:#FFCC00,stroke:#333,stroke-width:2px,color:#000;
+    classDef grey fill:#7F8C8D,stroke:#333,stroke-width:2px,color:#fff;
+    classDef amber fill:#E67E22,stroke:#333,stroke-width:2px,color:#fff;
+    classDef green fill:#2ECC71,stroke:#333,stroke-width:2px,color:#fff;
 
-----
+    A["Cook Updates KDS Status Tag"]:::kds
+    B["WebSocket Event Broadcast"]:::sync
+    
+    C1["'Pending'<br>(Grey Screen)"]:::grey
+    C2["'Preparing'<br>(Amber Cooking Screen)"]:::amber
+    C3["'Ready'<br>(Green Flash Alert)"]:::green
 
-## PM Brainstorming: Breaking Down the Core Innovations
-To make this MVP truly impactful, we need to design the Must-Have features with a highly specific product logic:
-
-### 1. The "Anti-Chaos" Unified Cart
-
-* The Product Logic: Instead of treating every individual smartphone scan as an independent customer session, our backend needs to create a single, live-syncing "room bucket" tied strictly to the table_id.
-* The UX Flow: When User A adds a burger and User B adds tacos at Table 4, they both see the items appearing in real time on their respective screens. The order cannot be fired until someone clicks the collective "Review & Fire" button.
-* Why this wins: It completely eliminates the "Ghost Order" problem. The kitchen gets one clean ticket for the table, allowing the chef to pace the execution correctly.
-
-### 2. Guardrailed Allergy Alerts
-
-* The Product Logic: We are ditching the traditional text box buried at the bottom of the checkout screen.
-* The UX Flow: When a user selects a modification or types an allergy note, our system flags it with a high-priority data attribute. On the KDS dashboard, this text automatically scales up and renders in bold, flashing, or high-contrast red font.
-* Why this wins: It forces the kitchen line's eyes right to the restriction. No more dropped tickets or chefs walking out to the floor to read bad handwriting.
-
-### 3. Two-Way Micro-Status Communication
-
-* The Product Logic: The KDS isn't just a static "Done" checklist. It is a live state-machine.
-* The UX Flow: When a line cook moves a ticket from Pending → Preparing, a WebSocket event fires immediately. The diner’s phone screen shifts from a grey "Received" state to an amber "Cooking" state. When bumped to Ready, it flashes vibrant green.
-* Why this wins: It bridges the information asymmetry. Diners stop harassing busy waitstaff with "Where is my food?" because their phone tells them exactly what stage it's in.
-
+    A --> B
+    B --> C1
+    C1 -->|Status Shift| C2
+    C2 -->|Status Shift| C3
+```
 ------------------------------
 
 ## What we are actively ignoring
-To hit our 4-day deadline,
-
 * No Payments: Diners will pay the waiter at the end via the house traditional POS. We are managing operations, not transactions right now.
 * No Authentication: No "Sign up with Google" or phone number verification. If they are sitting at Table 5, their physical location is their authorization token.
 
